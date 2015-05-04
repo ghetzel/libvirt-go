@@ -180,7 +180,7 @@ func (c *VirConnection) ListDomains() ([]uint32, error) {
 }
 
 func (c *VirConnection) ListInterfaces() ([]string, error) {
-	const maxIfaces = 1024
+	const maxIfaces = 256
 	var names [maxIfaces](*C.char)
 	namesPtr := unsafe.Pointer(&names)
 	numIfaces := C.virConnectListInterfaces(
@@ -199,7 +199,7 @@ func (c *VirConnection) ListInterfaces() ([]string, error) {
 }
 
 func (c *VirConnection) ListNetworks() ([]string, error) {
-	const maxNets = 1024
+	const maxNets = 256
 	var names [maxNets](*C.char)
 	namesPtr := unsafe.Pointer(&names)
 	numNetworks := C.virConnectListNetworks(
@@ -218,7 +218,7 @@ func (c *VirConnection) ListNetworks() ([]string, error) {
 }
 
 func (c *VirConnection) ListStoragePools() ([]string, error) {
-	const maxPools = 1024
+	const maxPools = 256
 	var names [maxPools](*C.char)
 	namesPtr := unsafe.Pointer(&names)
 	numStoragePools := C.virConnectListStoragePools(
@@ -291,7 +291,7 @@ func (c *VirConnection) DomainDefineXML(xmlConfig string) (VirDomain, error) {
 }
 
 func (c *VirConnection) ListDefinedInterfaces() ([]string, error) {
-	const maxIfaces = 1024
+	const maxIfaces = 256
 	var names [maxIfaces](*C.char)
 	namesPtr := unsafe.Pointer(&names)
 	numIfaces := C.virConnectListDefinedInterfaces(
@@ -310,7 +310,7 @@ func (c *VirConnection) ListDefinedInterfaces() ([]string, error) {
 }
 
 func (c *VirConnection) ListDefinedNetworks() ([]string, error) {
-	const maxNets = 1024
+	const maxNets = 256
 	var names [maxNets](*C.char)
 	namesPtr := unsafe.Pointer(&names)
 	numNetworks := C.virConnectListDefinedNetworks(
@@ -329,7 +329,7 @@ func (c *VirConnection) ListDefinedNetworks() ([]string, error) {
 }
 
 func (c *VirConnection) ListDefinedStoragePools() ([]string, error) {
-	const maxPools = 1024
+	const maxPools = 256
 	var names [maxPools](*C.char)
 	namesPtr := unsafe.Pointer(&names)
 	numStoragePools := C.virConnectListDefinedStoragePools(
