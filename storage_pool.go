@@ -209,3 +209,24 @@ func (p *VirStoragePool) LookupStorageVolByName(name string) (VirStorageVol, err
 	}
 	return VirStorageVol{ptr: ptr}, nil
 }
+
+func (p *VirStoragePool) ListVolumes() ([]string, error) {
+	var volumes [256](*C.char)
+	volsPtr := unsafe.Pointer(&volumes)
+
+	numVolumes := C.virStoragePoolListVolumes(
+		p.ptr,
+		(**C.char)(volsPtr),
+		256)
+
+	if numVolumes == -1 {
+		return nil, errors.New(GetLastError())
+	}
+
+	goVolumes := make([]string, numVolumes)
+	for k := 0; k < int(numVolumes); k++ {
+		goVolumes[k] = C.GoString(volumes[k])
+		C.free(unsafe.Pointer(volumes[k]))
+	}
+	return goVolumes, nil
+}

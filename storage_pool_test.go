@@ -284,3 +284,52 @@ func TestLookupStorageVolByName(t *testing.T) {
 		t.Fatalf("expected storage volume name: %s ,got: %s", defVolName, name)
 	}
 }
+
+func TestListVolumes(t *testing.T) {
+	pool, conn := buildTestStoragePool()
+	defer func() {
+		pool.Undefine()
+		pool.Free()
+		conn.CloseConnection()
+	}()
+	if err := pool.Create(0); err != nil {
+		t.Error(err)
+		return
+	}
+	defer pool.Destroy()
+	vol, err := pool.StorageVolCreateXML(testStorageVolXML("vol1", "default-pool"), 0)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	vol, err = pool.StorageVolCreateXML(testStorageVolXML("vol2", "default-pool"), 0)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	defer func() {
+		vol.Delete(VIR_STORAGE_VOL_DELETE_NORMAL)
+		vol.Free()
+	}()
+
+	vols, err := pool.ListVolumes()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	if len(vols) != 2 {
+		t.Fatalf("Incorrect number of volumes in pool 'default-pool': expected 2, got %d", len(vols))
+	}
+
+
+	if vols[0] != "vol1" {
+		t.Fatalf("Incorrect volume name in pool 'default-pool': expected 'vol1', got %s", vols[0])
+	}
+
+	if vols[1] != "vol2" {
+		t.Fatalf("Incorrect volume name in pool 'default-pool': expected 'vol2', got %s", vols[1])
+	}
+}
