@@ -130,6 +130,35 @@ func TestStorageVolGetPath(t *testing.T) {
 	}
 }
 
+func TestStorageVolGetPool(t *testing.T) {
+	pool, conn := buildTestStoragePool()
+	defer func() {
+		pool.Undefine()
+		pool.Free()
+		conn.CloseConnection()
+	}()
+	if err := pool.Create(0); err != nil {
+		t.Error(err)
+		return
+	}
+	defer pool.Destroy()
+	vol, err := pool.StorageVolCreateXML(testStorageVolXML("", "default-pool"), 0)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	defer func() {
+		vol.Delete(VIR_STORAGE_VOL_DELETE_NORMAL)
+		vol.Free()
+	}()
+
+	if newPool, err := vol.GetPool(); err != nil {
+		t.Fatal(err)
+	}else if name, err := newPool.GetName(); name != "default-pool-test-1" {
+		t.Fatalf("Expected GetPool() to return 'default-pool-test-1', got '%s' (err: %v)", name, err)
+	}
+}
+
 func TestStorageVolGetXMLDesc(t *testing.T) {
 	pool, conn := buildTestStoragePool()
 	defer func() {

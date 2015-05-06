@@ -85,6 +85,17 @@ func (v *VirStorageVol) GetPath() (string, error) {
 	return path, nil
 }
 
+
+func (v *VirStorageVol) GetPool() (VirStoragePool, error) {
+	result := C.virStoragePoolLookupByVolume(v.ptr)
+	if result == nil {
+		return VirStoragePool{ptr: result}, errors.New(GetLastError())
+	}
+
+	return VirStoragePool{ptr: result}, nil
+}
+
+
 func (v *VirStorageVol) GetXMLDesc(flags uint32) (string, error) {
 	result := C.virStorageVolGetXMLDesc(v.ptr, C.uint(flags))
 	if result == nil {
