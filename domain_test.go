@@ -236,6 +236,18 @@ func TestShutdownReboot(t *testing.T) {
 	}
 }
 
+func TestShutdownReset(t *testing.T) {
+	dom, conn := buildTestDomain()
+	defer func() {
+		dom.Free()
+		conn.CloseConnection()
+	}()
+	if err := dom.Reset(0); err != nil {
+		t.Error(err)
+		return
+	}
+}
+
 func TestDomainAutostart(t *testing.T) {
 	dom, conn := buildTestDomain()
 	defer func() {

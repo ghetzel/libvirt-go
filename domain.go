@@ -116,6 +116,14 @@ func (d *VirDomain) Reboot(flags uint) error {
 	return nil
 }
 
+func (d *VirDomain) Reset(flags uint) error {
+	result := C.virDomainReset(d.ptr, C.uint(flags))
+	if result == -1 {
+		return errors.New(GetLastError())
+	}
+	return nil
+}
+
 func (d *VirDomain) IsActive() (bool, error) {
 	result := C.virDomainIsActive(d.ptr)
 	if result == -1 {
