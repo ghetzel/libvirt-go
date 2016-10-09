@@ -8,7 +8,7 @@ import (
 )
 
 /*
-#cgo LDFLAGS: -lvirt -ldl
+#cgo LDFLAGS: -lvirt
 #include <libvirt/libvirt.h>
 #include <libvirt/virterror.h>
 #include <stdlib.h>
