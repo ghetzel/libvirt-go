@@ -324,7 +324,6 @@ func TestListVolumes(t *testing.T) {
 		t.Fatalf("Incorrect number of volumes in pool 'default-pool': expected 2, got %d", len(vols))
 	}
 
-
 	if vols[0] != "vol1" {
 		t.Fatalf("Incorrect volume name in pool 'default-pool': expected 'vol1', got %s", vols[0])
 	}

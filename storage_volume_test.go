@@ -154,7 +154,7 @@ func TestStorageVolGetPool(t *testing.T) {
 
 	if newPool, err := vol.GetPool(); err != nil {
 		t.Fatal(err)
-	}else if name, err := newPool.GetName(); name != "default-pool-test-1" {
+	} else if name, err := newPool.GetName(); name != "default-pool-test-1" {
 		t.Fatalf("Expected GetPool() to return 'default-pool-test-1', got '%s' (err: %v)", name, err)
 	}
 }
